@@ -14,7 +14,7 @@ setup(
     license='MIT License',
     description='Django authentication using one-time-only email tokens',
     long_description=README,
-    url='https://qdonnellan.com',
+    url='https://github.com/qdonnellan/django_emailoto',
     author='Quentin Donnellan',
     author_email='quentin@qdonnellan.com',
     test_suite="runtests",
