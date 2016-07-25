@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from emailoto.token_client import TokenClient
 
 
-class EmaillOtoAuthBackend(object):
+class EmailOtoAuthBackend(object):
     def authenticate(self, email_token, counter_token):
         """Authenticate a user given a email_ and counter_ token pair."""
         try:

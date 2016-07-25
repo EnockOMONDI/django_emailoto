@@ -1,6 +1,6 @@
 from django.test import override_settings
 from emailoto.token_client import TokenClient
-from emailoto.authentication import EmaillOtoAuthBackend
+from emailoto.authentication import EmailOtoAuthBackend
 import time
 from .test_base import EmailOtoTest
 
@@ -89,23 +89,23 @@ class AuthenticationTest(EmailOtoTest):
 
     def test_valid_auth(self):
         e_token, c_token = TokenClient().get_token_pair('A@B.com')
-        backend = EmaillOtoAuthBackend()
+        backend = EmailOtoAuthBackend()
         user = backend.authenticate(e_token, c_token)
         self.assertEqual(user.username, 'A@B.com')
 
     def test_invalid_auth(self):
-        backend = EmaillOtoAuthBackend()
+        backend = EmailOtoAuthBackend()
         user = backend.authenticate('fake-email-token', 'fake-counter-token')
         self.assertFalse(user)
 
     def test_valid_email_invalid_counter(self):
         e_token, c_token = TokenClient().get_token_pair('A@B.com')
-        backend = EmaillOtoAuthBackend()
+        backend = EmailOtoAuthBackend()
         user = backend.authenticate(e_token, 'fake-counter-token')
         self.assertFalse(user)
 
     def test_invalid_email_valid_counter(self):
         e_token, c_token = TokenClient().get_token_pair('A@B.com')
-        backend = EmaillOtoAuthBackend()
+        backend = EmailOtoAuthBackend()
         user = backend.authenticate('fake-email-token', c_token)
         self.assertFalse(user)
