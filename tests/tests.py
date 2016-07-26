@@ -2,7 +2,9 @@ from django.test import override_settings
 from emailoto.token_client import TokenClient
 from emailoto.authentication import EmailOtoAuthBackend
 import time
+from django.test.client import RequestFactory
 from .test_base import EmailOtoTest
+from emailoto import views
 
 
 class TokenClientTest(EmailOtoTest):
@@ -109,3 +111,22 @@ class AuthenticationTest(EmailOtoTest):
         backend = EmailOtoAuthBackend()
         user = backend.authenticate('fake-email-token', c_token)
         self.assertFalse(user)
+
+
+class ValidateViewsTest(EmailOtoTest):
+
+    def test_valid_get_request(self):
+        e_token, c_token = TokenClient().get_token_pair('A@B.com')
+        factory = RequestFactory()
+        url = '/dummy/url?a=%s&b=%s' % (e_token, c_token)
+        request = factory.get(url)
+        response = views.validate(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_invalid_get_request(self):
+        e_token, c_token = 'fake-email-token', 'fake-counter-token'
+        factory = RequestFactory()
+        url = '/dummy/url?a=%s&b=%s' % (e_token, c_token)
+        request = factory.get(url)
+        response = views.validate(request)
+        self.assertEqual(response.status_code, 403)
