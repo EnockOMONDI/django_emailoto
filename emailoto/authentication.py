@@ -11,7 +11,7 @@ class EmailOtoAuthBackend(object):
         except TokenClient.InvalidTokenPair:
             return False
         else:
-            user, created = User.objects.get_or_create(username=email)
+            user, _ = User.objects.get_or_create(username=email)
             return user
         return None
 
