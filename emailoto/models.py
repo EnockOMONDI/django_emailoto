@@ -1,7 +1,8 @@
-from django.contrib.auth import models
+from django.contrib.auth.models import AbstractBaseUser
+from django.db import models
 
 
-class EmailOtoAuthUser(models.AbstractBaseUser):
+class EmailOtoAuthUser(AbstractBaseUser):
     username = models.CharField(max_length=120, unique=True)
 
     USERNAME_FIELD = 'username'

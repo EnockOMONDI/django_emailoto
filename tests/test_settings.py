@@ -12,10 +12,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tests'
+    'tests',
+    'emailoto'
 ]
 
-ROOT_URLCONF = 'tests.urls'
+ROOT_URLCONF = 'emailoto.urls'
 WSGI_APPLICATION = 'tests.wsgi.application'
 
 DATABASES = {
