@@ -113,6 +113,13 @@ class AuthenticationTest(EmailOtoTest):
         user = backend.authenticate('fake-email-token', c_token)
         self.assertFalse(user)
 
+    def test_full_circle_auth(self):
+        factory = RequestFactory()
+        url = EmailOtoAuthBackend.get_auth_url('test@example.com')
+        request = factory.get(url)
+        response = views.validate(request)
+        self.assertEqual(response.status_code, 200)
+
 
 class ValidateViewsTest(EmailOtoTest):
 
