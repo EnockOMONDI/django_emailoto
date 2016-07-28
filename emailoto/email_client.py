@@ -2,14 +2,14 @@ from django.template import Context
 from django.template.loader import get_template
 from emailoto.authentication import EmailOtoAuthBackend
 from django.utils.safestring import mark_safe
-from emailoto.config import EmailOtoConfig
+from emailoto.config import CONFIG
 import requests
 
 
 class EmailClient(object):
 
     def _create_template(self, request, email):
-        template = get_template(EmailOtoConfig.template)
+        template = get_template(CONFIG.template)
         url = EmailOtoAuthBackend.get_auth_url(email)
         context = Context({
             'auth_url': mark_safe(request.build_absolute_uri(url))
@@ -18,12 +18,12 @@ class EmailClient(object):
 
     def send_simple_message(self, request, email):
         return requests.post(
-            "%s/messages" % EmailOtoConfig.mailgun_api_key,
-            auth=("api", EmailOtoConfig.mailgun_api_url),
+            "%s/messages" % CONFIG.mailgun_api_key,
+            auth=("api", CONFIG.mailgun_api_url),
             data={
-                "from": EmailOtoConfig.sender,
+                "from": CONFIG.sender,
                 "to": email,
-                "subject": EmailOtoConfig.subject,
+                "subject": CONFIG.subject,
                 "text": self._create_template(request, email)
             }
         )

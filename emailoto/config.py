@@ -2,11 +2,16 @@ from django.conf import settings
 
 
 class EmailOtoConfig(object):
-    redis_host = settings.EMAILOTO_CONFIG.get('redis_host', default='localhost')
-    redis_port = settings.EMAILOTO_CONFIG.get('redis_port', default=6379)
-    redis_db = settings.EMAILOTO_CONFIG.get('redis_host', default=2)
-    expiration = settings.EMAILOTO_CONFIG.get('expiration', default=60 * 10)
-    template = settings.EMAILOTO_CONFIG.get('template', default='emailoto/default_template.html')
+
+    def __init__(self):
+        self.redis_host = settings.EMAILOTO_CONFIG.get('redis_host', default='localhost')
+        self.redis_port = settings.EMAILOTO_CONFIG.get('redis_port', default=6379)
+        self.redis_db = settings.EMAILOTO_CONFIG.get('redis_host', default=2)
+        self.expiration = settings.EMAILOTO_CONFIG.get('expiration', default=60 * 10)
+        self.template = settings.EMAILOTO_CONFIG.get('template', default='emailoto/default_template.html')
+        self.mailgun_api_key = self.get_mailgun_api_key()
+        self.mailgun_api_url = self.get_mailgun_api_url()
+        self.sender = self.get_sender()
 
     class ImproperlyConfigured(Exception):
         pass
@@ -29,23 +34,26 @@ class EmailOtoConfig(object):
         )
 
     @property
-    def mailgun_api_key(self):
+    def get_mailgun_api_key(self):
         value = settings.EMAILOTO_CONFIG.get('mailgun_api_key')
         if not value:
             self._raise('No "mailgun_api_key" found.')
         return value
 
     @property
-    def mailgun_api_url(self):
+    def get_mailgun_api_url(self):
         value = settings.EMAILOTO_CONFIG.get('mailgun_api_url')
         if not value:
             self._raise('No "mailgun_api_url" found.')
         return value
 
     @property
-    def sender(self):
+    def get_sender(self):
         """The sender shown for the authentication email."""
         value = settings.EMAILOTO_CONFIG.get('sender')
         if not value:
             self._raise('No "sender" found.')
         return value
+
+
+CONFIG = EmailOtoConfig()
