@@ -1,4 +1,3 @@
-from django.test import override_settings
 from emailoto.token_client import TokenClient
 from emailoto.authentication import EmailOtoAuthBackend
 import time
@@ -6,6 +5,7 @@ from django.test.client import RequestFactory
 from .test_base import EmailOtoTest
 from emailoto import views
 from django.core.urlresolvers import reverse
+from emailoto.email_client import EmailClient
 
 
 class TokenClientTest(EmailOtoTest):
@@ -63,7 +63,6 @@ class TokenClientTest(EmailOtoTest):
         with self.assertRaises(TokenClient.InvalidTokenPair):
             TokenClient().validate_token_pair(e_token, c_token)
 
-    @override_settings(EMAILOTO_REDIS_KEY_EXPIRATION=1)
     def test_expired_email(self):
         """An email token should expire."""
         tc = TokenClient()
@@ -71,7 +70,6 @@ class TokenClientTest(EmailOtoTest):
         time.sleep(1.1)
         self.assertIsNone(tc._validate_email(token))
 
-    @override_settings(EMAILOTO_REDIS_KEY_EXPIRATION=1)
     def test_expired_counter_token(self):
         """A counter token should expire."""
         tc = TokenClient()
@@ -79,7 +77,6 @@ class TokenClientTest(EmailOtoTest):
         time.sleep(1.1)
         self.assertFalse(tc._validate_counter(token))
 
-    @override_settings(EMAILOTO_REDIS_KEY_EXPIRATION=1)
     def test_expired_tokens(self):
         """Test both tokens at once for expiration."""
         e_token, c_token = TokenClient().get_token_pair('A@B.com')
@@ -138,3 +135,11 @@ class ValidateViewsTest(EmailOtoTest):
         request = factory.get(url)
         response = views.validate(request)
         self.assertEqual(response.status_code, 403)
+
+
+class EmailClientTest(EmailOtoTest):
+
+    def test_send_email(self):
+        request = RequestFactory().get('email/login')
+        print EmailClient()._create_template(request, 'test@example.com')
+        self.assertEqual(1, 2)

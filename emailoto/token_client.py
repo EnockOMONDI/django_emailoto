@@ -6,10 +6,12 @@ import uuid
 class TokenClient(object):
 
     def __init__(self):
+        # TODO Add default redis host/port/db settings
+
         self._redis = redis.StrictRedis(
-            host=settings.EMAILOTO_REDIS_HOST,
-            port=settings.EMAILOTO_REDIS_PORT,
-            db=settings.EMAILOTO_REDIS_DB
+            host=settings.EMAILOTO_CONFIG.get('redis_host', 'localhost'),
+            port=settings.EMAILOTO_CONFIG.get('redis_port', 6379),
+            db=settings.EMAILOTO_CONFIG.get('redis_db', 2)
         )
 
     class InvalidTokenPair(Exception):
@@ -46,8 +48,9 @@ class TokenClient(object):
 
     def _set_and_expire(self, key, value):
         """Set the key-value pair to redis. Also set an expiration time."""
+        expiration_time = settings.EMAILOTO_CONFIG.get('expiration', 60 * 10)
         self._redis.set(key, value)
-        self._redis.expire(key, settings.EMAILOTO_REDIS_KEY_EXPIRATION)
+        self._redis.expire(key, expiration_time)
 
     def _validate_counter(self, token):
         """Validate the given token. If it exists, increment its count.
