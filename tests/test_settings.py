@@ -26,6 +26,11 @@ DATABASES = {
     }
 }
 
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'APP_DIRS': True,
+}]
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -34,7 +39,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-EMAILOTO_REDIS_HOST = os.environ.get('EMAILOTO_REDIS_HOST')
-EMAILOTO_REDIS_PORT = os.environ.get('EMAILOTO_REDIS_PORT')
-EMAILOTO_REDIS_DB = os.environ.get('EMAILOTO_REDIS_DB')
-EMAILOTO_REDIS_KEY_EXPIRATION = 1
+EMAILOTO_CONFIG = {
+    'redis_host': 'localhost',
+    'redis_port': 6379,
+    'redis_db': 2,
+    'expiration': 1,
+    'mailgun_api_key': os.environ.get('MAILGUN_API_KEY'),
+    'mailgun_api_url': os.environ.get('MAILGUN_API_URL'),
+    'sender': os.environ.get('MAILGUN_SENDER'),
+    'template': 'emailoto/default_template.html'
+}
