@@ -1,1 +1,3 @@
 Makefile
+emailoto.egg-info
+dist*
