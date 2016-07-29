@@ -8,4 +8,8 @@ Copyright (c) 2016 Quentin Donnellan
 
 See LICENSE file for full license.
 
-## TODO: the rest of this readme...
+## Installation 
+
+'''
+pip install git+git://github.com/qdonnellan/django_emailoto.git@master
+'''

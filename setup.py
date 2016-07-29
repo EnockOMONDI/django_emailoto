@@ -9,7 +9,12 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='emailoto',
     version='0.1',
-    packages=find_packages(),
+    install_requires=[
+        'redis==2.10.5',
+        'requests==2.10.0',
+        'django-ratelimit==1.0.0',
+    ],
+    packages=find_packages(exclude=('tests',)),
     include_package_data=True,
     license='MIT License',
     description='Django authentication using one-time-only email tokens',
