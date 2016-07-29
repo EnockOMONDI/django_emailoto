@@ -67,6 +67,14 @@ and email to your users when they attempt to log in (it's up to you to determine
 how a user logs in - i.e. they input their email in a form, or the input their username
 in a form and you read their email from a db, only sending an email if it exists, etc.)
 
+Once you've collected an email address,
+
+```
+from emailoto import email
+
+email.send(email='test@example.com')
+```
+
 Here is an example of sending an authentication email request after a POST from
 a form.
 
@@ -75,7 +83,7 @@ from emailoto import email
 
 def my_form(request):
     if request.POST:
-        email.send(request.POST.get('email'))
+        email.send(email=request.POST.get('email'))
 ```
 
 
