@@ -5,7 +5,7 @@ from django.test.client import RequestFactory
 from .test_base import EmailOtoTest
 from emailoto import views
 from django.core.urlresolvers import reverse
-from emailoto.email_client import EmailClient
+from emailoto.config import EmailOtoConfig
 
 
 class TokenClientTest(EmailOtoTest):
@@ -137,9 +137,8 @@ class ValidateViewsTest(EmailOtoTest):
         self.assertEqual(response.status_code, 403)
 
 
-class EmailClientTest(EmailOtoTest):
+class ConfigTest(EmailOtoTest):
 
-    def test_send_email(self):
-        request = RequestFactory().get('email/login')
-        print EmailClient()._create_template(request, 'test@example.com')
-        self.assertEqual(1, 2)
+    def test_missing_config(self):
+        with self.assertRaises(EmailOtoConfig.ImproperlyConfigured):
+            EmailOtoConfig().get_or_raise('jhbjhbjh')

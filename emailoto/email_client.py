@@ -4,6 +4,7 @@ from emailoto.authentication import EmailOtoAuthBackend
 from django.utils.safestring import mark_safe
 from emailoto.config import CONFIG
 import requests
+from ratelimit.decorators import ratelimit
 
 
 class EmailClient(object):
@@ -16,6 +17,7 @@ class EmailClient(object):
         })
         return template.render(context)
 
+    @ratelimit(key='ip', rate=CONFIG.ratelimit)
     def send_simple_message(self, request, email):
         return requests.post(
             "%s/messages" % CONFIG.mailgun_api_key,
