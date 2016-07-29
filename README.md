@@ -22,9 +22,18 @@ pip install git+git://github.com/qdonnellan/django_emailoto.git@master
 ## Configuration
 
 As a bare-minimum, just provide emailoto with your MailGun API information
+and configure your application to use emailoto's authentication backend 
 in your django project's `settings.py` file.
 
 ```
+AUTHENTICATION_BACKENDS = (
+    'emailoto.authentication.EmailOtoAuthBackend',
+)
+
+MIDDLEWARE_CLASSES = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+]
+
 EMAILOTO = {
     'mailgun_api_key': # Your mailgun API key,
     'mailgun_api_url': # The mailgun API url,
@@ -42,11 +51,15 @@ EMAILOTO = {
     'redis_host': 'localhost',
     'redis_port': 6379,
     'redis_db': 2,
-    'expiration': 1,
+    'expiration': 60 * 10,
     'mailgun_api_key': # Your mailgun API key,
     'mailgun_api_url': # The mailgun API url,
     'sender': 'Your Name <you@yourdomain>',
     'template': 'yourapp/email_template.html',
-    'ratelimit': '10/h'
+    'ratelimit': '10/h',
+    'login_redirect': '/'
 }
 ```
+
+
+

@@ -16,6 +16,14 @@ INSTALLED_APPS = [
     'emailoto'
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'emailoto.authentication.EmailOtoAuthBackend',
+)
+
+MIDDLEWARE_CLASSES = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+]
+
 ROOT_URLCONF = 'emailoto.urls'
 WSGI_APPLICATION = 'tests.wsgi.application'
 

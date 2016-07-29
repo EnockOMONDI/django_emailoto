@@ -12,6 +12,7 @@ class EmailOtoConfig(object):
         self.expiration = settings.EMAILOTO.get('expiration', 60 * 10)
         self.template = settings.EMAILOTO.get('template', 'emailoto/default_template.html')  # NOQA
         self.ratelimit = settings.EMAILOTO.get('ratelimit', '5/m')
+        self.login_redirect = settings.EMAILOTO.get('login_redirect', '/')
 
         self.mailgun_api_key = self.get_or_raise('mailgun_api_key')
         self.mailgun_api_url = self.get_or_raise('mailgun_api_url')

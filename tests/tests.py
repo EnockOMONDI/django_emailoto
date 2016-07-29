@@ -5,7 +5,8 @@ from django.test.client import RequestFactory
 from .test_base import EmailOtoTest
 from emailoto import views
 from django.core.urlresolvers import reverse
-from emailoto.config import EmailOtoConfig
+from emailoto.config import EmailOtoConfig, CONFIG
+
 
 
 class TokenClientTest(EmailOtoTest):
@@ -111,29 +112,25 @@ class AuthenticationTest(EmailOtoTest):
         self.assertFalse(user)
 
     def test_full_circle_auth(self):
-        factory = RequestFactory()
         url = EmailOtoAuthBackend.get_auth_url('test@example.com')
-        request = factory.get(url)
-        response = views.validate(request)
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(CONFIG.login_redirect, response['Location'])
 
 
 class ValidateViewsTest(EmailOtoTest):
 
     def test_valid_get_request(self):
         e_token, c_token = TokenClient().get_token_pair('A@B.com')
-        factory = RequestFactory()
         url = reverse('emailoto-validate') + '?a=%s&b=%s' % (e_token, c_token)
-        request = factory.get(url)
-        response = views.validate(request)
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(CONFIG.login_redirect, response['Location'])
 
     def test_invalid_get_request(self):
         e_token, c_token = 'fake-email-token', 'fake-counter-token'
-        factory = RequestFactory()
         url = reverse('emailoto-validate') + '?a=%s&b=%s' % (e_token, c_token)
-        request = factory.get(url)
-        response = views.validate(request)
+        response = response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
 

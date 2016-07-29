@@ -5,21 +5,19 @@ from django.core.urlresolvers import reverse
 
 class EmailOtoAuthBackend(object):
 
-    @staticmethod
-    def authenticate(email_token, counter_token):
+    def authenticate(self, email_token, counter_token):
         """Authenticate a user given a email_ and counter_ token pair."""
         try:
             email = TokenClient().validate_token_pair(
                 email_token, counter_token)
         except TokenClient.InvalidTokenPair:
-            return False
+            return None
         else:
             user, _ = User.objects.get_or_create(username=email)
             return user
         return None
 
-    @staticmethod
-    def get_user(email):
+    def get_user(self, email):
         """Get the user associated with the given email address."""
         try:
             return User.objects.get(username=email)
