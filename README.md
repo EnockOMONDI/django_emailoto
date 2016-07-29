@@ -63,7 +63,7 @@ EMAILOTO = {
 
 ## Usage
 Once your django application is correctly configured, all you need to do is send
-and email to your users when they attempt to log in (it's up to you to determine
+an email to your users when they attempt to log in (it's up to you to determine
 how a user logs in - i.e. they input their email in a form, or the input their username
 in a form and you read their email from a db, only sending an email if it exists, etc.)
 
