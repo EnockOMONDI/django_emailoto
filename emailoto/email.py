@@ -19,8 +19,8 @@ def _create_template(request, email):
 @ratelimit(key='ip', rate=CONFIG.ratelimit)
 def send(request, email):
     return requests.post(
-        "%s/messages" % CONFIG.mailgun_api_key,
-        auth=("api", CONFIG.mailgun_api_url),
+        "%s/messages" % CONFIG.mailgun_api_url,
+        auth=("api", CONFIG.mailgun_api_key),
         data={
             "from": CONFIG.sender,
             "to": email,
