@@ -1,10 +1,10 @@
 import redis
-from django.conf import settings
 import uuid
 from emailoto.config import CONFIG
 
 
 class TokenClient(object):
+    _redis_prefix = 'emailoto:'
 
     def __init__(self):
         self._redis = redis.StrictRedis(
@@ -29,20 +29,24 @@ class TokenClient(object):
             return email
         raise self.InvalidTokenPair
 
+    def _redis_key(self, token):
+        """Append a common prefix to all tokens in redis."""
+        return self._redis_prefix + token
+
     def _set_email(self, email):
         """Create a unique token key for the given email address."""
         token = uuid.uuid4().hex
-        self._set_and_expire(token, email)
+        self._set_and_expire(self._redis_key(token), email)
         return token
 
     def _validate_email(self, email_token):
         """Return the email address if the email token is valid."""
-        return self._redis.get(email_token)
+        return self._redis.get(self._redis_key(email_token))
 
     def _set_counter(self):
         """Create a unique token with a counter and set it in Redis."""
         token = uuid.uuid4().hex
-        self._set_and_expire(token, '0')
+        self._set_and_expire(self._redis_key(token), '0')
         return token
 
     def _set_and_expire(self, key, value):
@@ -56,8 +60,8 @@ class TokenClient(object):
         A token is invalid if it doesn't exist in redis, or if it has already
         been validated (the count > 0).
         """
-        count = self._redis.get(token)
+        count = self._redis.get(self._redis_key(token))
         if count and count.isdigit() and int(count) == 0:
-            self._redis.incr(token)
+            self._redis.incr(self._redis_key(token))
             return True
         return False

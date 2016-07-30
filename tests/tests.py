@@ -15,14 +15,16 @@ class TokenClientTest(EmailOtoTest):
         """Setting a token should put it in redis with a count of '0'."""
         tc = TokenClient()
         token = tc._set_counter()
-        self.assertEqual(tc._redis.get(token), '0')
+        key = tc._redis_key(token)
+        self.assertEqual(tc._redis.get(key), '0')
 
     def test_validate_counter(self):
         """A valid token with return True and increment the counter."""
         tc = TokenClient()
         token = tc._set_counter()
+        key = tc._redis_key(token)
         self.assertTrue(tc._validate_counter(token))
-        self.assertEqual(tc._redis.get(token), '1')
+        self.assertEqual(tc._redis.get(key), '1')
 
     def test_more_than_one_validation(self):
         """Only the first validation should return True."""
@@ -40,7 +42,8 @@ class TokenClientTest(EmailOtoTest):
         """Test setting an email and getting a token for that email."""
         tc = TokenClient()
         token = tc._set_email('test@example.com')
-        self.assertEqual(tc._redis.get(token), 'test@example.com')
+        key = tc._redis_key(token)
+        self.assertEqual(tc._redis.get(key), 'test@example.com')
 
     def test_set_and_validate_email(self):
         """Set and validate an email."""
