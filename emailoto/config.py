@@ -14,12 +14,20 @@ class EmailOtoConfig(object):
         self.ratelimit = settings.EMAILOTO.get('ratelimit', '5/m')
         self.login_redirect = settings.EMAILOTO.get('login_redirect', '/')
 
-        self.mailgun_api_key = self.get_or_raise('mailgun_api_key')
-        self.mailgun_api_url = self.get_or_raise('mailgun_api_url')
-        self.sender = self.get_or_raise('sender')
-
     class ImproperlyConfigured(Exception):
         pass
+
+    @property
+    def mailgun_api_key(self):
+        return self.get_or_raise('mailgun_api_key')
+
+    @property
+    def mailgun_api_url(self):
+        return self.get_or_raise('mailgun_api_url')
+
+    @property
+    def sender(self):
+        return self.get_or_raise('sender')
 
     def get_or_raise(self, setting_key):
         value = settings.EMAILOTO.get(setting_key)
