@@ -21,18 +21,34 @@ pip install git+git://github.com/qdonnellan/django_emailoto.git@master
 
 ## Configuration
 
-As a bare-minimum, just provide emailoto with your MailGun API information
-and configure your application to use emailoto's authentication backend 
-in your django project's `settings.py` file.
+Make the following modifications to your `settings.py` file.
+
+1. Add `emailoto` to installed apps:
+
+```
+INSTALLED_APPS = [
+    ...,
+    'emailoto'
+]
+```
+
+2. Configure the authentication backend:
 
 ```
 AUTHENTICATION_BACKENDS = (
     'emailoto.authentication.EmailOtoAuthBackend',
 )
+```
 
+3. Make sure you have the session middleware installed:
+
+```
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
 ]
+```
+
+4. Add your mailgun keys.
 
 EMAILOTO = {
     'mailgun_api_key': # Your mailgun API key,
@@ -44,7 +60,7 @@ EMAILOTO = {
 - `mailgun_api_key` should look something like `key-BlaBLaLbaFakeKey`
 - `mailgun_api_url` should look something like `https://api.mailgun.net/v3/soMesecretSauCE.mailgun.org`
 
-Additionally, you can override default settings in the same `EMAILOTO` dict:
+5. Additionally, you can override default settings in the same `EMAILOTO` dict:
 
 ```
 EMAILOTO = {
@@ -67,13 +83,6 @@ an email to your users when they attempt to log in (it's up to you to determine
 how a user logs in - i.e. they input their email in a form, or the input their username
 in a form and you read their email from a db, only sending an email if it exists, etc.)
 
-Once you've collected an email address,
-
-```
-from emailoto import email
-
-email.send(email='test@example.com')
-```
 
 Here is an example of sending an authentication email request after a POST from
 a form.
@@ -83,7 +92,21 @@ from emailoto import email
 
 def my_form(request):
     if request.POST:
-        email.send(email=request.POST.get('email'))
+        email.send(
+            request=request,
+            email=request.POST.get('email')
+        )
 ```
 
+When a user clicks on the link in their email, they will be authenticated using
+the `EmailOtoAuthBackend` and a django user sessions created for them. You can
+close their session by logging the user out as you would log out any django user
 
+
+```
+from django.contrib.auth import logout
+
+
+def my_logout_view(requsest):
+    logout(request)
+```
