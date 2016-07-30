@@ -23,28 +23,29 @@ pip install git+git://github.com/qdonnellan/django_emailoto.git@master
 
 Make the following modifications to your `settings.py` file.
 
-1. Add `emailoto` to installed apps:
+### 1. Add `emailoto` to installed apps:
 ```
 INSTALLED_APPS = [
     ...,
     'emailoto'
 ]
 ```
-2. Configure the authentication backend:
+
+### 2. Configure the authentication backend:
 ```
 AUTHENTICATION_BACKENDS = (
     'emailoto.authentication.EmailOtoAuthBackend',
 )
 ```
 
-3. Make sure you have the session middleware installed:
+### 3. Make sure you have the session middleware installed:
 ```
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 ```
 
-4. Add your mailgun keys.
+### 4. Add your mailgun keys.
 
 EMAILOTO = {
     'mailgun_api_key': # Your mailgun API key,
@@ -56,7 +57,7 @@ EMAILOTO = {
 - `mailgun_api_key` should look something like `key-BlaBLaLbaFakeKey`
 - `mailgun_api_url` should look something like `https://api.mailgun.net/v3/soMesecretSauCE.mailgun.org`
 
-5. Additionally, you can override default settings in the same `EMAILOTO` dict:
+### 5. Additionally, you can override default settings in the same `EMAILOTO` dict:
 ```
 EMAILOTO = {
     'redis_host': 'localhost',
