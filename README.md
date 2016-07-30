@@ -46,7 +46,7 @@ MIDDLEWARE_CLASSES = [
 ```
 
 ### 4. Add your mailgun keys.
-
+```
 EMAILOTO = {
     'mailgun_api_key': # Your mailgun API key,
     'mailgun_api_url': # The mailgun API url,
