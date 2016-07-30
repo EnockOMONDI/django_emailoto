@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'emailoto'
 ]
 ```
-
 2. Configure the authentication backend:
 ```
 AUTHENTICATION_BACKENDS = (
