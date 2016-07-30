@@ -13,6 +13,7 @@ class EmailOtoConfig(object):
         self.template = settings.EMAILOTO.get('template', 'emailoto/default_template.html')  # NOQA
         self.ratelimit = settings.EMAILOTO.get('ratelimit', '5/m')
         self.login_redirect = settings.EMAILOTO.get('login_redirect', '/')
+        self.subject = settings.EMAILOTO.get('subject', 'Email login request.')
 
     class ImproperlyConfigured(Exception):
         pass
