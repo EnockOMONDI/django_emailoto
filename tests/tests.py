@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from emailoto.config import EmailOtoConfig, CONFIG
 
 
-
 class TokenClientTest(EmailOtoTest):
 
     def test_set_counter(self):
@@ -95,7 +94,7 @@ class AuthenticationTest(EmailOtoTest):
         e_token, c_token = TokenClient().get_token_pair('A@B.com')
         backend = EmailOtoAuthBackend()
         user = backend.authenticate(e_token, c_token)
-        self.assertEqual(user.username, 'A@B.com')
+        self.assertEqual(user.email, 'A@B.com')
 
     def test_invalid_auth(self):
         backend = EmailOtoAuthBackend()

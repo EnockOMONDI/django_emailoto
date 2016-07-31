@@ -1,8 +1,8 @@
 from django.template import Context
 from django.template.loader import get_template
-from emailoto.authentication import EmailOtoAuthBackend
+from .authentication import EmailOtoAuthBackend
 from django.utils.safestring import mark_safe
-from emailoto.config import CONFIG
+from .config import CONFIG
 import requests
 from ratelimit.decorators import ratelimit
 

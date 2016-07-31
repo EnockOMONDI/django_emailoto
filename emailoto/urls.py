@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from . import views
 
 
-urlpatterns = patterns("emailoto.views",
-    url(r'^$', 'validate', name='emailoto-validate')
-)
+urlpatterns = [
+    url(r'^$', views.validate, name='emailoto-validate')
+]

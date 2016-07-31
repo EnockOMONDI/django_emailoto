@@ -1,6 +1,6 @@
 import redis
 import uuid
-from emailoto.config import CONFIG
+from .config import CONFIG
 
 
 class TokenClient(object):

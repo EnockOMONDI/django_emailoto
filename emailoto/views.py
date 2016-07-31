@@ -1,7 +1,7 @@
 from django.views.decorators.http import require_GET
 from django.http import HttpResponseForbidden
 from ratelimit.decorators import ratelimit
-from emailoto.config import CONFIG
+from .config import CONFIG
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 
