@@ -84,11 +84,11 @@ Here is an example of sending an authentication email request after a POST from
 a form.
 
 ```
-from emailoto import email
+import emailoto
 
 def my_form(request):
     if request.POST:
-        email.send(
+        emailoto.send_email(
             request=request,
             email=request.POST.get('email')
         )
@@ -103,6 +103,6 @@ close their session by logging the user out as you would log out any django user
 from django.contrib.auth import logout
 
 
-def my_logout_view(requsest):
+def my_logout_view(request):
     logout(request)
 ```

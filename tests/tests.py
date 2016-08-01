@@ -3,7 +3,6 @@ from emailoto.authentication import EmailOtoAuthBackend
 import time
 from django.test.client import RequestFactory
 from .test_base import EmailOtoTest
-from emailoto import views
 from django.core.urlresolvers import reverse
 from emailoto.config import EmailOtoConfig, CONFIG
 
