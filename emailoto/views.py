@@ -15,6 +15,6 @@ def validate(request):
     user = authenticate(email_token=email_token, counter_token=client_token)
     if user:
         login(request, user)
-        return redirect(CONFIG.login_redirect)
+        return redirect(request.GET.get('success', '/'))
     else:
         return HttpResponseForbidden()

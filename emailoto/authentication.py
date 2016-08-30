@@ -31,11 +31,12 @@ class EmailOtoAuthBackend(object):
             return None
 
     @staticmethod
-    def get_auth_url(email):
+    def get_auth_url(email, success_url="/"):
         """Construct the auth_url for  a given email."""
         email_token, client_token = TokenClient().get_token_pair(email)
         url = reverse('emailoto-validate')
-        return url + '?a=%s&b=%s' % (email_token, client_token)
+        return url + '?a=%s&b=%s&success=%s' % (
+            email_token, client_token, success_url)
 
     @staticmethod
     def _random_username():
