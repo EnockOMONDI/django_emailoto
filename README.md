@@ -24,7 +24,7 @@ pip install git+git://github.com/qdonnellan/django_emailoto.git@master
 Make the following modifications to your `settings.py` file.
 
 ### 1. Add `emailoto` to installed apps:
-```
+```python
 INSTALLED_APPS = [
     ...,
     'emailoto'
@@ -32,21 +32,21 @@ INSTALLED_APPS = [
 ```
 
 ### 2. Configure the authentication backend:
-```
+```python
 AUTHENTICATION_BACKENDS = (
     'emailoto.authentication.EmailOtoAuthBackend',
 )
 ```
 
 ### 3. Make sure you have the session middleware installed:
-```
+```python
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 ```
 
 ### 4. Add your mailgun keys.
-```
+```python
 EMAILOTO = {
     'mailgun_api_key': # Your mailgun API key,
     'mailgun_api_url': # The mailgun API url,
@@ -57,7 +57,18 @@ EMAILOTO = {
 - `mailgun_api_key` should look something like `key-BlaBLaLbaFakeKey`
 - `mailgun_api_url` should look something like `https://api.mailgun.net/v3/soMesecretSauCE.mailgun.org`
 
-### 5. Additionally, you can override default settings in the same `EMAILOTO` dict:
+### 5. Set your verification url.
+
+```python
+
+# in urls.py
+
+urlpatterns += [
+    url(r'^emailverify/', include('emailoto.urls')),
+]
+```
+
+### 6. Additionally, you can override default settings in the same `EMAILOTO` dict:
 ```
 EMAILOTO = {
     'redis_host': 'localhost',
@@ -66,10 +77,7 @@ EMAILOTO = {
     'expiration': 60 * 10,
     'mailgun_api_key': # Your mailgun API key,
     'mailgun_api_url': # The mailgun API url,
-    'sender': 'Your Name <you@yourdomain>',
-    'template': 'yourapp/email_template.html',
     'ratelimit': '10/h',
-    'login_redirect': '/'
 }
 ```
 
@@ -89,8 +97,12 @@ import emailoto
 def my_form(request):
     if request.POST:
         emailoto.send_email(
-            request=request,
-            email=request.POST.get('email')
+            request,
+            to_email=request.POST.get('email'),
+            sender='quentin@qdonnellan.com',
+            subject='Please Verify your Email to Complete the Process',
+            template='someapp/some_template.html',
+            success_url='/success'
         )
 ```
 
