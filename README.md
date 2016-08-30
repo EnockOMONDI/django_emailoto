@@ -48,14 +48,10 @@ MIDDLEWARE_CLASSES = [
 ### 4. Add your mailgun keys.
 ```python
 EMAILOTO = {
-    'mailgun_api_key': # Your mailgun API key,
-    'mailgun_api_url': # The mailgun API url,
-    'sender': 'Your Name <you@yourdomain>'
+    'mailgun_api_key': `key-BlaBLaLbaFakeKey`,
+    'mailgun_api_url': `https://api.mailgun.net/v3/soMesecretSauCE.mailgun.org`
 }
 ```
-
-- `mailgun_api_key` should look something like `key-BlaBLaLbaFakeKey`
-- `mailgun_api_url` should look something like `https://api.mailgun.net/v3/soMesecretSauCE.mailgun.org`
 
 ### 5. Set your verification url.
 
@@ -68,15 +64,15 @@ urlpatterns += [
 ]
 ```
 
-### 6. Additionally, you can override default settings in the same `EMAILOTO` dict:
-```
+### 6. Additionally, you can override other default settings in the same `EMAILOTO` dict:
+```python
 EMAILOTO = {
     'redis_host': 'localhost',
     'redis_port': 6379,
     'redis_db': 2,
-    'expiration': 60 * 10,
-    'mailgun_api_key': # Your mailgun API key,
-    'mailgun_api_url': # The mailgun API url,
+    'expiration': 60 * 10, #seconds
+    'mailgun_api_key': `key-BlaBLaLbaFakeKey`,
+    'mailgun_api_url': `https://api.mailgun.net/v3/soMesecretSauCE.mailgun.org`,
     'ratelimit': '10/h',
 }
 ```
@@ -91,7 +87,7 @@ in a form and you read their email from a db, only sending an email if it exists
 Here is an example of sending an authentication email request after a POST from
 a form.
 
-```
+```python
 import emailoto
 
 def my_form(request):
@@ -111,7 +107,7 @@ the `EmailOtoAuthBackend` and a django user sessions created for them. You can
 close their session by logging the user out as you would log out any django user
 
 
-```
+```python
 from django.contrib.auth import logout
 
 
