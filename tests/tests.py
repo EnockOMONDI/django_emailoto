@@ -1,7 +1,6 @@
 from emailoto.token_client import TokenClient
 from emailoto.authentication import EmailOtoAuthBackend
 import time
-from django.test.client import RequestFactory
 from .test_base import EmailOtoTest
 from django.core.urlresolvers import reverse
 from emailoto.config import EmailOtoConfig, CONFIG
